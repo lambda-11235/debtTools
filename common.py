@@ -28,7 +28,7 @@ def amountOwed(principal, rate, freq, time, payment):
     :payment:   How much is paid each cycle.
     """
     a = (1 + rate/freq)
-    return principal*a**(freq*time) - payment * (1 - a**(freq*time))/(1 - a)
+    return principal*a**(freq*time) - payment * freq*(a**(freq*time) - 1)/rate
 
 def timeToPayOff(principal, rate, freq, payment):
     """
@@ -40,13 +40,13 @@ def timeToPayOff(principal, rate, freq, payment):
     :payment:   How much is paid each cycle.
     """
     a = (1 + rate/freq)
-    tmp = (1 - a)*principal + payment
+    tmp = freq*payment - rate*principal
 
     if tmp <= 0:
         # Time frame is to long to accurately calculate.
         return None
     else:
-        return (log(payment) - log(tmp))/(freq*log(a))
+        return (log(freq*payment) - log(tmp))/(freq*log(a))
 
 def paymentNeeded(principal, rate, freq, time):
     """
@@ -58,7 +58,7 @@ def paymentNeeded(principal, rate, freq, time):
     :time:      How many years payments will be made for.
     """
     a = 1 + rate/freq
-    return a**(freq*time)*(1 - a)/(1 - a**(freq*time)) * principal
+    return rate*a**(freq*time)/(freq*(a**(freq*time) - 1)) * principal
 
 def paymentMinimum(principal, rate, freq):
     """
@@ -69,8 +69,7 @@ def paymentMinimum(principal, rate, freq):
     :rate:      The interest rate.
     :freq:      Compound frequency per year.
     """
-    a = 1 + rate/freq
-    return (a - 1)*principal
+    return rate*principal/freq
 
 def paymentRecommended(principal, rate, freq, delta):
     """
@@ -82,5 +81,5 @@ def paymentRecommended(principal, rate, freq, delta):
     :delta:     The tradeoff fraction.
     """
     a = 1 + rate/freq
-    tmp = (1 - a)*principal
-    return (-tmp + sqrt(tmp**2 - 4*tmp/(freq * delta * log(a))))/2
+    tmp = rate*principal
+    return (tmp + sqrt(tmp**2 + 4*tmp/(delta * log(a))))/(2*freq)

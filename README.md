@@ -19,14 +19,21 @@ Should pay 659.96 to pay debt off in 20.00 years.
 Total paid is 158389.38, which is a 58.39% return on investment for lender.
 
 Minimum payment needed to maintain current debt is 416.67.
-Recommended minimum payment is 485.47 for 39.16 years for a total of 228122.88 (128.12% return).
+Recommended minimum payment is 500.15 for 35.88 years for a total of 215344.19 (115.34% return).
 ```
 
 This program gives the amount needed to meet one's target payoff period, the
 total that will be paid, and how much the investor can expect in return.
 Additionally, it will give the minimum payment needed to not increase debt, as
-well as a recommended minimum payment (this is approximately how much one needs
-to pay to make headway in paying off debt).
+well as a recommended minimum payment.
+The recommended minimum payment is approximately how much one needs to pay so
+that a $5 increase in spending results in a reduction of overall payment time by
+1 year, which can be changed with the `--delta` flag.
+
+A graph of time to payoff debts versus amount paid can also be shown with the
+`--graph` option.
+An example graph is
+![Graph of time to payoff versus amount paid.](./mortgage_time_pay.png)
 
 ## `compound_interest.py`
 
@@ -44,7 +51,7 @@ This again gives how long it will take to pay off the debt, how much in total
 will be paid, and the return on investment it gives the lender.
 
 Passing the `--graph` option gives a graph like so
-![Graph of mortgage owed vs paid.](./mortgage.png)
+![Graph of mortgage owed vs paid.](./mortgage_owed_paid.png)
 
 # Contributions
 

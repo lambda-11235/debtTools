@@ -38,47 +38,54 @@ Remember that we can find the solution to the finite exponential series as so
 
 Plugging this in gives us our debt calculation.
 \begin{align*}
-    D_{nt} &= a^{nt} P - p \frac{1 - a^{nt}}{1 - a}
+    D_{nt} &= a^{nt} P - p \frac{1 - a^{nt}}{1 - a}\\
+           &= a^{nt} P - p \frac{n (a^{nt} - 1)}{r}
 \end{align*}
 
 From here we can calculate the minimum payment needed to pay off all debts in
 a certain time frame.
 \begin{align*}
     0 &= D_{nt}\\
-    0 &= a^{nt} P - p \frac{1 - a^{nt}}{1 - a}\\
-    p &= \frac{a^{nt}}{\frac{1 - a^{nt}}{1 - a}} P\\
-      &= \frac{a^{nt} (1 - a)}{1 - a^{nt}} P\\
-      &= \frac{a^{nt} (1 - a)}{1 - a^{nt}} P
+    0 &= a^{nt} P - p \frac{n (a^{nt} - 1)}{r}\\
+    p &= \frac{r a^{nt}}{n (a^{nt} - 1)} P
 \end{align*}
 
 Taking the limit of $t$ we can also find the minimum payment needed to maintain
 debt.
 \begin{align*}
-    p_\text{min} &= \lim_{t \to \infty} \frac{a^{nt} (1 - a)}{1 - a^{nt}} P\\
-                 &= (a - 1) P
+    p_\text{min} &= \lim_{t \to \infty} \frac{r a^{nt}}{n (a^{nt} - 1)} P\\
+                 &= \frac{r}{n} P
+\end{align*}
+
+We can also calculate how long it will take to pay off all debts.
+\begin{align*}
+    0 &= a^{nt} P - p \frac{n (a^{nt} - 1)}{r}\\
+    0 &= ra^{nt} P - np (a^{nt} - 1)\\
+    -np &= (rP - np) a^{nt}\\
+    a^{nt} &= \frac{np}{np - rP}\\
+    nt &= \frac{\ln{np} - \ln\del{np - rP}}{\ln{a}}\\
+    t &= \frac{\ln{np} - \ln\del{np - rP}}{n\ln{a}}
 \end{align*}
 
 We can also take the derivative of $t$ with respect to $p$ to find the optimal
 trade-off point.
 \begin{align*}
     \dpd{t}{p} &= -\delta\\
-    \frac{\frac{1}{p} - \frac{1}{(1 - a) P + p}}{n \ln{a}} &= -\delta\\
-    \frac{1}{p} - \frac{1}{(1 - a) P + p} &= -n\delta \ln{a}\\
-    \frac{(1 - a) P}{p ((1 - a) P + p)} &= -n\delta \ln{a}\\
-    p ((1 - a) P + p) &= -\frac{(1 - a) P}{n\delta \ln{a}}\\
-    p^2 + (1 - a) Pp + \frac{(1 - a) P}{n\delta \ln{a}} &= 0\\
-    p &= \frac{-(1 - a) P \pm \sqrt{(1 - a)^2 P^2 - \frac{(1 - a) P}{n\delta \ln{a}}}}{2}\\
-      &= \frac{-(1 - a) P + \sqrt{(1 - a)^2 P^2 - \frac{(1 - a) P}{n\delta \ln{a}}}}{2}\\
+    \frac{\frac{n}{np} - \frac{n}{np - rP}}{n \ln{a}} &= -\delta\\
+    \frac{\frac{1}{np} - \frac{1}{np - rP}}{\ln{a}} &= -\delta\\
+    \frac{1}{np} - \frac{1}{np - rP} &= -\delta \ln{a}\\
+    np - rP - np &= -\delta \ln{a} np (np - rP)\\
+    -rP &= -\delta \ln{a} np (np - rP)\\
+    n^2 p^2 - nrP p &= \frac{rP}{\delta \ln{a}}\\
+    n^2 p^2 - nrP p - \frac{rP}{\delta \ln{a}} &= 0\\
+    p &= \frac{nrP \pm \sqrt{n^2r^2P^2 + \frac{4n^2 rP}{\delta \ln{a}}}}{2n^2}\\
+      &= \frac{rP \pm \sqrt{r^2P^2 + \frac{4rP}{\delta \ln{a}}}}{2n}
 \end{align*}
 
-We can also calculate how long it will take to pay off all debts.
-\begin{align*}
-    0 &= a^{nt} (1 - a) P - p (1 - a^{nt})\\
-    p &= ((1 - a) P + p) a^{nt}\\
-    a^{nt} &= \frac{p}{(1 - a) P + p}\\
-    nt &= \frac{\ln{p} - \ln\del{(1 - a) P + p}}{\ln{a}}\\
-    t &= \frac{\ln{p} - \ln\del{(1 - a) P + p}}{n \ln{a}}\\
-\end{align*}
+If we consider $\delta$ to be
+$\frac{\Delta\text{time to payoff}}{\Delta\text{payment}}$
+Then $\delta = \frac{1}{5}$ would represent the point where we have to pay \$5
+more for a decrease of 1 year in time to payoff.
 
 \end{document}
 

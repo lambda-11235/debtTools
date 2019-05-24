@@ -32,9 +32,10 @@ parser.add_argument('freq', type=int,
         help="Compound frequency per year.")
 parser.add_argument('time', type=float,
         help="How many years it will take to pay off debt in years.")
-parser.add_argument('--delta', type=float, default=0.25,
+parser.add_argument('--delta', type=float, default=0.2,
         help="""Constant for determining recommended minimum payment.
-        Higher values favor longer payoff periods. (default: %(default)s)""")
+        Higher values favor longer payoff periods.
+        It can be estimated as (change in time)/(change in payment). (default: %(default)s)""")
 parser.add_argument('--graph', action='store_true',
         help="Graphs time to payoff versus period payment amount.")
 args = parser.parse_args()
@@ -68,7 +69,12 @@ print("Recommended minimum payment is {:.2f} for {:.2f} years for a total of {:.
 
 
 if args.graph:
-    time = [t/args.freq for t in range(1, math.ceil(args.freq*args.time) + 1)]
+    timeUpper = math.ceil(args.freq*args.time) + 1
+    timeLower = max(1, timeUpper//8)
+    time = [t/args.freq for t in range(timeLower, timeUpper)]
     payment = [paymentNeeded(args.principal, args.interest, args.freq, t) for t in time]
+
     plt.plot(time, payment)
+    plt.xlabel("Time to pay off debt (years)")
+    plt.ylabel("Amount paid per period")
     plt.show()

@@ -56,5 +56,7 @@ if args.graph:
     plt.plot(time, owed)
     plt.plot(time, paid)
     plt.plot(time, len(time)*[args.principal])
+
     plt.legend(["Owed", "Paid", "Principal"])
+    plt.xlabel("Time (years)")
     plt.show()
