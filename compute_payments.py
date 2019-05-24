@@ -32,6 +32,9 @@ parser.add_argument('freq', type=int,
         help="Compound frequency per year.")
 parser.add_argument('time', type=float,
         help="How many years it will take to pay off debt in years.")
+parser.add_argument('--delta', type=float, default=0.25,
+        help="""Constant for determining recommended minimum payment.
+        Higher values favor longer payoff periods. (default: %(default)s)""")
 parser.add_argument('--graph', action='store_true',
         help="Graphs time to payoff versus period payment amount.")
 args = parser.parse_args()
@@ -51,9 +54,9 @@ paid = freq*time*p
 
 pmin = paymentMinimum(args.principal, args.interest, args.freq)
 
-pideal = paymentIdeal(args.principal, args.interest, args.freq)
-tideal = timeToPayOff(args.principal, args.interest, args.freq, pideal)
-paidIdeal = freq*tideal*pideal
+pRec = paymentRecommended(args.principal, args.interest, args.freq, args.delta)
+tRec = timeToPayOff(args.principal, args.interest, args.freq, pRec)
+paidRec = freq*tRec*pRec
 
 print("Should pay {:.2f} to pay debt off in {:.2f} years.".format(p, time))
 print("Total paid is {:.2f}, which is a {:.2f}% return on investment for lender.".format(
@@ -61,7 +64,7 @@ print("Total paid is {:.2f}, which is a {:.2f}% return on investment for lender.
 print("")
 print("Minimum payment needed to maintain current debt is {:.2f}.".format(pmin))
 print("Recommended minimum payment is {:.2f} for {:.2f} years for a total of {:.2f} ({:.2f}% return).".format(
-    pideal, tideal, paidIdeal, (paidIdeal - P)/P*100))
+    pRec, tRec, paidRec, (paidRec - P)/P*100))
 
 
 if args.graph:

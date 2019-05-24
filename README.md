@@ -16,13 +16,17 @@ mortgage at a 5% interest rate in 20 years run
 ```
 > ./compute_payments.py 100000 0.05 12 20
 Should pay 659.96 to pay debt off in 20.00 years.
-Minimum payment needed to maintain current debt is 416.67.
 Total paid is 158389.38, which is a 58.39% return on investment for lender.
+
+Minimum payment needed to maintain current debt is 416.67.
+Recommended minimum payment is 485.47 for 39.16 years for a total of 228122.88 (128.12% return).
 ```
 
 This program gives the amount needed to meet one's target payoff period, the
-minimum payment needed to not increase debt, the total that will be paid, and
-how much the investor can expect in return.
+total that will be paid, and how much the investor can expect in return.
+Additionally, it will give the minimum payment needed to not increase debt, as
+well as a recommended minimum payment (this is approximately how much one needs
+to pay to make headway in paying off debt).
 
 ## `compound_interest.py`
 

@@ -58,6 +58,19 @@ debt.
                  &= (a - 1) P
 \end{align*}
 
+We can also take the derivative of $t$ with respect to $p$ to find the optimal
+trade-off point.
+\begin{align*}
+    \dpd{t}{p} &= -\delta\\
+    \frac{\frac{1}{p} - \frac{1}{(1 - a) P + p}}{n \ln{a}} &= -\delta\\
+    \frac{1}{p} - \frac{1}{(1 - a) P + p} &= -n\delta \ln{a}\\
+    \frac{(1 - a) P}{p ((1 - a) P + p)} &= -n\delta \ln{a}\\
+    p ((1 - a) P + p) &= -\frac{(1 - a) P}{n\delta \ln{a}}\\
+    p^2 + (1 - a) Pp + \frac{(1 - a) P}{n\delta \ln{a}} &= 0\\
+    p &= \frac{-(1 - a) P \pm \sqrt{(1 - a)^2 P^2 - \frac{(1 - a) P}{n\delta \ln{a}}}}{2}\\
+      &= \frac{-(1 - a) P + \sqrt{(1 - a)^2 P^2 - \frac{(1 - a) P}{n\delta \ln{a}}}}{2}\\
+\end{align*}
+
 We can also calculate how long it will take to pay off all debts.
 \begin{align*}
     0 &= a^{nt} (1 - a) P - p (1 - a^{nt})\\
@@ -65,16 +78,6 @@ We can also calculate how long it will take to pay off all debts.
     a^{nt} &= \frac{p}{(1 - a) P + p}\\
     nt &= \frac{\ln{p} - \ln\del{(1 - a) P + p}}{\ln{a}}\\
     t &= \frac{\ln{p} - \ln\del{(1 - a) P + p}}{n \ln{a}}\\
-\end{align*}
-
-\begin{align*}
-    \dpd{t}{p} &= -\frac{1}{2}\\
-    \frac{\frac{1}{p} - \frac{1}{(1 - a) P + p}}{n \ln{a}} &= -\frac{1}{2}\\
-    \frac{1}{p} - \frac{1}{(1 - a) P + p} &= -\frac{n \ln{a}}{2}\\
-    \frac{(1 - a) P}{p ((1 - a) P + p)} &= -\frac{n \ln{a}}{2}\\
-    p ((1 - a) P + p) &= -\frac{2(1 - a) P}{n \ln{a}}\\
-    p^2 + (1 - a) Pp + \frac{2(1 - a) P}{n \ln{a}} &= 0\\
-    p &= \frac{-(1 - a) P \pm \sqrt{(1 - a)^2 P^2 - \frac{8(1 - a) P}{n \ln{a}}}}{2}\\
 \end{align*}
 
 \end{document}
