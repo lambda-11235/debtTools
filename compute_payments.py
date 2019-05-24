@@ -18,6 +18,7 @@
 
 
 import argparse
+import matplotlib.pyplot as plt
 import math
 
 from common import *
@@ -31,6 +32,8 @@ parser.add_argument('freq', type=int,
         help="Compound frequency per year.")
 parser.add_argument('time', type=float,
         help="How many years it will take to pay off debt in years.")
+parser.add_argument('--graph', action='store_true',
+        help="Graphs time to payoff versus period payment amount.")
 args = parser.parse_args()
 
 P = args.principal
@@ -39,7 +42,6 @@ freq = args.freq
 t = args.time
 
 p = paymentNeeded(args.principal, args.interest, args.freq, args.time)
-pmin = paymentMinimum(args.principal, args.interest, args.freq)
 
 time = timeToPayOff(args.principal, args.interest, args.freq, p)
 if time is None:
@@ -47,8 +49,23 @@ if time is None:
 
 paid = freq*time*p
 
+pmin = paymentMinimum(args.principal, args.interest, args.freq)
+
+pideal = paymentIdeal(args.principal, args.interest, args.freq)
+tideal = timeToPayOff(args.principal, args.interest, args.freq, pideal)
+paidIdeal = freq*tideal*pideal
 
 print("Should pay {:.2f} to pay debt off in {:.2f} years.".format(p, time))
-print("Minimum payment needed to maintain current debt is {:.2f}.".format(pmin))
 print("Total paid is {:.2f}, which is a {:.2f}% return on investment for lender.".format(
-        paid, (paid - P)/P*100))
+    paid, (paid - P)/P*100))
+print("")
+print("Minimum payment needed to maintain current debt is {:.2f}.".format(pmin))
+print("Recommended minimum payment is {:.2f} for {:.2f} years for a total of {:.2f} ({:.2f}% return).".format(
+    pideal, tideal, paidIdeal, (paidIdeal - P)/P*100))
+
+
+if args.graph:
+    time = [t/args.freq for t in range(1, math.ceil(args.freq*args.time) + 1)]
+    payment = [paymentNeeded(args.principal, args.interest, args.freq, t) for t in time]
+    plt.plot(time, payment)
+    plt.show()

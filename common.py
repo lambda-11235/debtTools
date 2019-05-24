@@ -71,3 +71,15 @@ def paymentMinimum(principal, rate, freq):
     """
     a = 1 + rate/freq
     return (a - 1)*principal
+
+def paymentIdeal(principal, rate, freq):
+    """
+    The payment amount that trades off equally between expense and time.
+
+    :principal: How much is initially owed.
+    :rate:      The interest rate.
+    :freq:      Compound frequency per year.
+    """
+    a = 1 + rate/freq
+    tmp = (1 - a)*principal
+    return (-tmp + sqrt(tmp**2 - 8*tmp/(freq * log(a))))/2
