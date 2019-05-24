@@ -14,39 +14,57 @@
 \begin{document}
 \maketitle
 
+First let's calculate the debt after a time period $t$ given a principal $P$, an
+interest rate $r$, a compound frequency $f$, and a cyclic payment $p$.
 \begin{align*}
+    a &= 1 + \frac{r}{n}\\
     D_0 &= P\\
-    D_1 &= (P - p) \del{1 + \frac{r}{n}}\\
-    D_2 &= \del{(P - p) \del{1 + \frac{r}{n}} - p} \del{1 + \frac{r}{n}}\\
-        &= P \del{1 + \frac{r}{n}}^2 - p \del{\del{1 + \frac{r}{n}}^2 + \del{1 + \frac{r}{n}}}\\
+    D_1 &= aP - p\\
+    D_2 &= a(aP - p) - p\\
+        &= a^2 P - p (a + 1)\\
         &\vdots\\
-    D_{nt} &= P \del{1 + \frac{r}{n}}^{nt} - p \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i\\
+    D_{nt} &= a^{nt} P - p \sum_{i = 0}^{nt - 1} a^i
 \end{align*}
 
+Remember that we can find the solution to the finite exponential series as so
 \begin{align*}
-    p &= qP\\
-    D_{nt} &= P \del{1 + \frac{r}{n}}^{nt} - qP \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i\\
-    D_{nt} &= P \sbr{\del{1 + \frac{r}{n}}^{nt} - q \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i}
+    x &= \sum_{i = 0}^{nt - 1} a^i\\
+    ax &= \sum_{i = 1}^{nt} a^i\\
+    ax - a^{nt} + 1 &= \sum_{i = 0}^{nt - 1} a^i\\
+    ax - a^{nt} + 1 &= x\\
+    (1 - a) x &= 1 - a^{nt}\\
+    x &= \frac{1 - a^{nt}}{1 - a}
 \end{align*}
 
+Plugging this in gives us our debt calculation.
 \begin{align*}
-    D_{nt} &= 0\\
-    P \del{1 + \frac{r}{n}}^{nt} - p \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i &= 0\\
-    p &= \frac{\del{1 + \frac{r}{n}}^{nt}}{\sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i} P\\
-    \\
-    x &= \sum_{i = 1}^{n} a^i\\
-    \frac{x}{a} &= \sum_{i = 0}^{n - 1} a^i\\
-    \frac{x}{a} + a^n - 1 &= \sum_{i = 1}^{n} a^i\\
-    \frac{x}{a} + a^n - 1 &= x\\
-    \del{1 - \frac{1}{a}} x &= a^n - 1\\
-    \del{\frac{a - 1}{a}} x &= a^n - 1\\
-    x &= \frac{a^{(n+1)} - a}{a - 1}\\
-    \\
-    \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i
-      &= \frac{\del{1 + \frac{r}{n}}^{(nt+1)} - \del{1 + \frac{r}{n}}}{\del{1 + \frac{r}{n}} - 1}\\
-      &= \frac{n}{r} \del{\del{1 + \frac{r}{n}}^{(nt+1)} - \del{1 + \frac{r}{n}}}\\
-    p &= \frac{\del{1 + \frac{r}{n}}^{nt}}{\frac{n}{r} \del{\del{1 + \frac{r}{n}}^{(nt+1)} - \del{1 + \frac{r}{n}}}} P\\
-      &= \frac{rP}{n \del{\del{1 + \frac{r}{n}} - \del{1 + \frac{r}{n}}^{(1 - nt)}}}\\
+    D_{nt} &= a^{nt} P - p \frac{1 - a^{nt}}{1 - a}
+\end{align*}
+
+From here we can calculate the minimum payment needed to pay off all debts in
+a certain time frame.
+\begin{align*}
+    0 &= D_{nt}\\
+    0 &= a^{nt} P - p \frac{1 - a^{nt}}{1 - a}\\
+    p &= \frac{a^{nt}}{\frac{1 - a^{nt}}{1 - a}} P\\
+      &= \frac{a^{nt} (1 - a)}{1 - a^{nt}} P\\
+      &= \frac{a^{nt} (1 - a)}{1 - a^{nt}} P
+\end{align*}
+
+Taking the limit of $t$ we can also find the minimum payment needed to maintain
+debt.
+\begin{align*}
+    p_\text{min} &= \lim_{t \to \infty} \frac{a^{nt} (1 - a)}{1 - a^{nt}} P\\
+                 &= (a - 1) P
+\end{align*}
+
+We can also calculate how long it will take to pay off all debts.
+\begin{align*}
+    0 &= a^{nt} (1 - a) P - p (1 - a^{nt})\\
+    p &= ((1 - a) P + p) a^{nt}\\
+    a^{nt} &= \frac{p}{(1 - a) P + p}\\
+    nt &= \frac{\ln{p} - \ln\del{(1 - a) P + p}}{\ln{a}}\\
+    t &= \frac{\ln{p} - \ln\del{(1 - a) P + p}}{n \ln{a}}\\
 \end{align*}
 
 \end{document}

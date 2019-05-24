@@ -1,70 +1,60 @@
+#!/usr/bin/env python
+
+# Debt analysis tools for compound interest.
+# Copyright (C) 2019  Taran Lynn
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 
 import argparse
 import matplotlib.pyplot as plt
-import numpy as np
+import math
+
+from common import *
 
 parser = argparse.ArgumentParser(description = "Run a test.")
 parser.add_argument('principal', type=float,
         help="How much is initially owed.")
-parser.add_argument('payment', type=float,
-        help="How much is paid each cycle.")
 parser.add_argument('interest', type=float,
         help="The interest rate.")
-parser.add_argument('n', type=int, default=12, nargs='?',
+parser.add_argument('freq', type=int,
         help="Compound frequency per year.")
-parser.add_argument('--pay-on-owed', type=float,
-        metavar = "percentage",
-        help="""Compute payments instead using a percentage of what is owed.
-        payment gives the minimum payment that will be made.""")
+parser.add_argument('payment', type=float,
+        help="How much is paid each cycle.")
 parser.add_argument('--graph', action='store_true',
         help="Graph owed and paid amounts versus time")
 args = parser.parse_args()
 
-payOnOwed = args.pay_on_owed is not None
-q = args.pay_on_owed
+totalTime = timeToPayOff(args.principal, args.interest, args.freq, args.payment)
 
-P = args.principal
-p = args.payment
-r = args.interest
-n = args.n
+if totalTime is None:
+    print("Payment will take an unbounded amount of time to pay off.")
+    exit(1)
 
-divergent = False
-years = None
-nt = [0]
-owed = [P]
-paid = [0]
+time = [t/args.freq for t in range(0, math.floor(args.freq*totalTime))]
+time.append(totalTime)
 
-while not divergent and years is None:
-    if payOnOwed:
-        p = max(p, q*owed[-1])
+owed = [amountOwed(args.principal, args.interest, args.freq, t, args.payment) for t in time]
+paid = [args.payment*args.freq*t for t in time]
 
-    if owed[-1] < p:
-        if years is None:
-            years = (nt[-1] + 1)/n
+print("Will take {:.2f} years to pay off.".format(totalTime))
+print("Total paid is {:.2f}, which is a {:.2f}% return on investment for lender.".format(
+    paid[-1], (paid[-1] - args.principal)/args.principal*100))
 
-        nextAmount = 0
-        paid.append(paid[-1] + owed[-1])
-    else:
-        nextAmount = (owed[-1] - p)*(1 + r/n)
-        paid.append(paid[-1] + p)
-
-    if nextAmount > P:
-        divergent = True
-
-    nt.append(nt[-1] + 1)
-    owed.append(nextAmount)
-
-if divergent:
-    print("Divergent amount owed, principal will never be paid off")
-else:
-    print("Will take {:.1f} years to pay off.".format(years))
-    print("Total paid is {:.2f}, which is a {:.1f}% return on investment for lender.".format(
-        paid[-1], (paid[-1] - P)/P*100))
-
-    if args.graph:
-        nt = np.array(nt)
-        plt.plot(nt/n, owed)
-        plt.plot(nt/n, paid)
-        plt.plot(nt/n, len(nt)*[P])
-        plt.legend(["Owed", "Paid", "Principal"])
-        plt.show()
+if args.graph:
+    plt.plot(time, owed)
+    plt.plot(time, paid)
+    plt.plot(time, len(time)*[args.principal])
+    plt.legend(["Owed", "Paid", "Principal"])
+    plt.show()
