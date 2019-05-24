@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{commath}
+\usepackage{mathtools}
+
+% For multipage align*
+\allowdisplaybreaks
+
+\title{Math Notes for Compound Interest}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{align*}
+    D_0 &= P\\
+    D_1 &= (P - p) \del{1 + \frac{r}{n}}\\
+    D_2 &= \del{(P - p) \del{1 + \frac{r}{n}} - p} \del{1 + \frac{r}{n}}\\
+        &= P \del{1 + \frac{r}{n}}^2 - p \del{\del{1 + \frac{r}{n}}^2 + \del{1 + \frac{r}{n}}}\\
+        &\vdots\\
+    D_{nt} &= P \del{1 + \frac{r}{n}}^{nt} - p \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i\\
+\end{align*}
+
+\begin{align*}
+    p &= qP\\
+    D_{nt} &= P \del{1 + \frac{r}{n}}^{nt} - qP \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i\\
+    D_{nt} &= P \sbr{\del{1 + \frac{r}{n}}^{nt} - q \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i}
+\end{align*}
+
+\begin{align*}
+    D_{nt} &= 0\\
+    P \del{1 + \frac{r}{n}}^{nt} - p \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i &= 0\\
+    p &= \frac{\del{1 + \frac{r}{n}}^{nt}}{\sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i} P\\
+    \\
+    x &= \sum_{i = 1}^{n} a^i\\
+    \frac{x}{a} &= \sum_{i = 0}^{n - 1} a^i\\
+    \frac{x}{a} + a^n - 1 &= \sum_{i = 1}^{n} a^i\\
+    \frac{x}{a} + a^n - 1 &= x\\
+    \del{1 - \frac{1}{a}} x &= a^n - 1\\
+    \del{\frac{a - 1}{a}} x &= a^n - 1\\
+    x &= \frac{a^{(n+1)} - a}{a - 1}\\
+    \\
+    \sum_{i = 1}^{nt} \del{1 + \frac{r}{n}}^i
+      &= \frac{\del{1 + \frac{r}{n}}^{(nt+1)} - \del{1 + \frac{r}{n}}}{\del{1 + \frac{r}{n}} - 1}\\
+      &= \frac{n}{r} \del{\del{1 + \frac{r}{n}}^{(nt+1)} - \del{1 + \frac{r}{n}}}\\
+    p &= \frac{\del{1 + \frac{r}{n}}^{nt}}{\frac{n}{r} \del{\del{1 + \frac{r}{n}}^{(nt+1)} - \del{1 + \frac{r}{n}}}} P\\
+      &= \frac{rP}{n \del{\del{1 + \frac{r}{n}} - \del{1 + \frac{r}{n}}^{(1 - nt)}}}\\
+\end{align*}
+
+\end{document}
+
