@@ -87,5 +87,17 @@ $\frac{\Delta\text{time to payoff}}{\Delta\text{payment}}$
 Then $\delta = \frac{1}{5}$ would represent the point where we have to pay \$5
 more for a decrease of 1 year in time to payoff.
 
+We can also consider the case for deriving by the principal.
+\begin{align*}
+    \dpd{D_{nt}}{P} &= \delta\\
+    a^{nt} &= \delta\\
+    p &= \frac{r a^{nt}}{n (a^{nt} - 1)} P\\
+    p &= \frac{r \delta}{n (\delta - 1)} P
+\end{align*}
+
+Note that we must have $\delta > 1$.
+In this case $\delta = 5$ would mean a \$1 increase in principal increases the
+total paid amount by \$5.
+
 \end{document}
 

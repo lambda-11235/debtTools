@@ -71,9 +71,9 @@ def paymentMinimum(principal, rate, freq):
     """
     return rate*principal/freq
 
-def paymentRecommended(principal, rate, freq, delta):
+def paymentFromTimeDelta(principal, rate, freq, delta):
     """
-    The payment amount that trades off by a set amount.
+    The payment amount such that `d(time)/d(payment) = -delta`.
 
     :principal: How much is initially owed.
     :rate:      The interest rate.
@@ -83,3 +83,17 @@ def paymentRecommended(principal, rate, freq, delta):
     a = 1 + rate/freq
     tmp = rate*principal
     return (tmp + sqrt(tmp**2 + 4*tmp/(delta * log(a))))/(2*freq)
+
+def paymentFromTotalDelta(principal, rate, freq, delta):
+    """
+    The payment amount such that `d(total paid)/d(principal) = delta`.
+
+    :principal: How much is initially owed.
+    :rate:      The interest rate.
+    :freq:      Compound frequency per year.
+    :delta:     The tradeoff fraction.
+    """
+    if delta <= 1:
+        raise RuntimeError("delta must greater then 1, is {}".format(delta))
+
+    return rate*delta/(freq*(delta - 1)) * principal

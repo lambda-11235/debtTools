@@ -19,7 +19,7 @@ Should pay 659.96 to pay debt off in 20.00 years.
 Total paid is 158389.38, which is a 58.39% return on investment for lender.
 
 Minimum payment needed to maintain current debt is 416.67.
-Recommended minimum payment is 500.15 for 35.88 years for a total of 215344.19 (115.34% return).
+Recommended minimum payment is 833.33 for 13.89 years for a total of 138918.05 (38.92% return).
 ```
 
 This program gives the amount needed to meet one's target payoff period, the
@@ -27,8 +27,11 @@ total that will be paid, and how much the investor can expect in return.
 Additionally, it will give the minimum payment needed to not increase debt, as
 well as a recommended minimum payment.
 The recommended minimum payment is approximately how much one needs to pay so
-that a $5 increase in spending results in a reduction of overall payment time by
-1 year, which can be changed with the `--delta` flag.
+that a $1 increase in the principal results in an increase of the total amount
+paid by $2 (this can be changed with the `--delta` flag).
+Please note this **does not** mean that the total amount paid is twice the
+principal, given monthly payments it ranges from 38.63% to 44.33% returns for
+the investor.
 
 A graph of time to payoff debts versus amount paid can also be shown with the
 `--graph` option.
