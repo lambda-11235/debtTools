@@ -53,9 +53,9 @@ print("Total paid is {:.2f}, which is a {:.2f}% return on investment for lender.
     paid[-1], (paid[-1] - args.principal)/args.principal*100))
 
 if args.graph:
-    plt.plot(time, owed)
-    plt.plot(time, paid)
-    plt.plot(time, len(time)*[args.principal])
+    plt.plot(time, owed, color="red")
+    plt.plot(time, paid, color="green")
+    plt.plot(time, len(time)*[args.principal], color="blue")
 
     plt.legend(["Owed", "Paid", "Principal"])
     plt.xlabel("Time (years)")

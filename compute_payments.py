@@ -70,11 +70,24 @@ print("Recommended minimum payment is {:.2f} for {:.2f} years for a total of {:.
 
 if args.graph:
     timeUpper = math.ceil(args.freq*args.time) + 1
-    timeLower = max(1, timeUpper//8)
+    timeLower = args.freq if args.time > 1.0 else 1
     time = [t/args.freq for t in range(timeLower, timeUpper)]
     payment = [paymentNeeded(args.principal, args.interest, args.freq, t) for t in time]
+    paid = [args.freq*t*p for (t, p) in zip(time, payment)]
 
-    plt.plot(time, payment)
-    plt.xlabel("Time to pay off debt (years)")
-    plt.ylabel("Amount paid per period")
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    ax2 = ax1.twinx()
+
+    l1 = "Amount paid per period"
+    l2 = "Total amount paid"
+
+    ax1.plot(time, payment, color="blue", label=l1)
+    ax2.plot(time, paid, color="red", label=l2)
+
+    ax1.set_xlabel("Time to pay off debt (years)")
+    ax1.set_ylabel(l1)
+    ax2.set_ylabel(l2)
+    fig.legend()
+
     plt.show()

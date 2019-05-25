@@ -45,7 +45,7 @@ For example, taking the above mortgage we could decide to pay $1,500 a month.
 The tool can be ran as
 
 ```
-> python compound_interest.py 100000 0.05 12 1500
+> ./compound_interest.py 100000 0.05 12 1500
 Will take 6.52 years to pay off.
 Total paid is 117395.96, which is a 17.40% return on investment for lender.
 ```
