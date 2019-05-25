@@ -29,6 +29,7 @@ well as a recommended minimum payment.
 The recommended minimum payment is approximately how much one needs to pay so
 that a $1 increase in the principal results in an increase of the total amount
 paid by $2 (this can be changed with the `--delta` flag).
+This value is double the minimum payment needed to maintain debt.
 Please note this **does not** mean that the total amount paid is twice the
 principal, given monthly payments it ranges from 38.63% to 44.33% returns for
 the investor.
@@ -56,7 +57,29 @@ will be paid, and the return on investment it gives the lender.
 Passing the `--graph` option gives a graph like so
 ![Graph of mortgage owed vs paid.](./mortgage_owed_paid.png)
 
-# Contributions
+## Financial Advise
+
+**This is non-expert advise and as such the maintainers of this repo are not
+liable for any actions taken because of it.**
+
+By experimenting with different values we can see several trends that lead to
+some interesting financial advise.
+
+1. Be wary of high interest rates.
+   The monthly payment needed is directly proportional to the interest rate.
+2. If low monthly payments are the main concern than pay twice the absolute
+   minimum.
+   This will minimize payments while also making significant headway towards
+   paying of the debt.
+3. If one must lower their payments, they should increase the time they will
+   take to pay it off and calculate how much they need to pay, instead of simply
+   decreasing the amount they will pay.
+   This is because increasing time can significantly bring payments closer to
+   their minimum, while the opposite is true for decreasing payments.
+   Thus, increasing time will give a better trade off between time and amount
+   paid.
+
+## Contributions
 
 For code contributions please open a pull request.
 If you find a bug or a mistake in my math please open an issue.
