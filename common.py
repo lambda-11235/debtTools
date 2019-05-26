@@ -17,6 +17,9 @@
 
 from math import *
 
+NEAR_ZERO = 1e-6
+
+
 def amountOwed(principal, rate, freq, time, payment):
     """
     Amount owed after a certain time period.
@@ -48,7 +51,18 @@ def timeToPayOff(principal, rate, freq, payment):
     else:
         return (log(freq*payment) - log(tmp))/(freq*log(a))
 
-def paymentNeeded(principal, rate, freq, time):
+def paymentMinimum(principal, rate, freq):
+    """
+    The absolute minimum payment that needs to be made to maintain current debt
+    levels.
+
+    :principal: How much is initially owed.
+    :rate:      The interest rate.
+    :freq:      Compound frequency per year.
+    """
+    return rate*principal/freq
+
+def paymentFromTime(principal, rate, freq, time):
     """
     The payment per period needed to pay off all debts in a given time span.
 
@@ -60,16 +74,33 @@ def paymentNeeded(principal, rate, freq, time):
     a = 1 + rate/freq
     return rate*a**(freq*time)/(freq*(a**(freq*time) - 1)) * principal
 
-def paymentMinimum(principal, rate, freq):
+def paymentFromAmount(principal, rate, freq, amount):
     """
-    The absolute minimum payment that needs to be made to maintain current debt
-    levels.
+    The payment per period needed to pay off all debts that add up to a given
+    amount.
 
     :principal: How much is initially owed.
     :rate:      The interest rate.
     :freq:      Compound frequency per year.
+    :amount:    The total principal and interest that must be paid.
     """
-    return rate*principal/freq
+    a = 1 + rate/freq
+
+
+    pay = paymentMinimum(principal, rate, freq)
+    f = 1  # To get into while loop
+
+    while abs(f) > NEAR_ZERO:
+        tmp = a**(amount/pay)
+        f = pay - rate*principal/(freq*(1 - 1/tmp))
+        deriv = 1 + rate*principal*log(a)/(freq*pay**2 * (tmp*(tmp - 1))**2)
+
+        if deriv == 0:
+            return None
+
+        pay -= f/deriv
+
+    return pay
 
 def paymentFromTimeDelta(principal, rate, freq, delta):
     """

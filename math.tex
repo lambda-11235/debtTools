@@ -14,6 +14,10 @@
 \begin{document}
 \maketitle
 
+\section{Relationships}
+
+\subsection{Debt Owed}
+
 First let's calculate the debt after a time period $t$ given a principal $P$, an
 interest rate $r$, a compound frequency $f$, and a cyclic payment $p$.
 \begin{align*}
@@ -42,6 +46,9 @@ Plugging this in gives us our debt calculation.
            &= a^{nt} P - p \frac{n (a^{nt} - 1)}{r}
 \end{align*}
 
+
+\subsection{Payments}
+
 From here we can calculate the minimum payment needed to pay off all debts in
 a certain time frame.
 \begin{align*}
@@ -57,6 +64,9 @@ debt.
                  &= \frac{r}{n} P
 \end{align*}
 
+
+\subsection{Time}
+
 We can also calculate how long it will take to pay off all debts.
 \begin{align*}
     0 &= a^{nt} P - p \frac{n (a^{nt} - 1)}{r}\\
@@ -66,6 +76,11 @@ We can also calculate how long it will take to pay off all debts.
     nt &= \frac{\ln{np} - \ln\del{np - rP}}{\ln{a}}\\
     t &= \frac{\ln{np} - \ln\del{np - rP}}{n\ln{a}}
 \end{align*}
+
+
+\section{Derivatives}
+
+\subsection{Time vs Payment}
 
 We can also take the derivative of $t$ with respect to $p$ to find the optimal
 trade-off point.
@@ -87,6 +102,9 @@ $\frac{\Delta\text{time to payoff}}{\Delta\text{payment}}$
 Then $\delta = \frac{1}{5}$ would represent the point where we have to pay \$5
 more for a decrease of 1 year in time to payoff.
 
+
+\subsection{Debt Owed vs Principal}
+
 We can also consider the case for deriving by the principal.
 \begin{align*}
     \dpd{D_{nt}}{P} &= \delta\\
@@ -98,6 +116,40 @@ We can also consider the case for deriving by the principal.
 Note that we must have $\delta > 1$.
 In this case $\delta = 5$ would mean a \$1 increase in principal increases the
 total paid amount by \$5.
+
+
+\section{Meeting a Specific Return on Investment}
+
+Say that we want to only pay a specific amount of return on a debt.
+For instance we only want to pay \$1200 back on a \$1000 dollar loan.
+We can say $G$ is what we're willing to pay back, where $G > P$.
+We then have
+
+\begin{align*}
+    ntp &= G\\
+    nt &= \frac{G}{p}\\
+    p &= \frac{r a^{G/p}}{n (a^{G/p} - 1)} P\\
+    p &= \frac{r}{n (1 - a^{-G/p})} P\\
+    p - \frac{r}{n (1 - a^{-G/p})} P &= 0
+\end{align*}
+
+This is easily solvable, but we can use Newton's method to find an answer using
+a calculator.
+\begin{align*}
+    f(p) &= p - \frac{r}{n (1 - a^{-G/p})} P\\
+    f'(p) &= 1 - \frac{r}{n} \del{-\frac{1}{(1 - a^{-G/p})^2}} \del{\frac{-\ln(a) a^{-G/p}}{p^2}} P\\
+               &= 1 - \frac{rP \ln(a) a^{-G/p}}{np^2 (1 - a^{-G/p})^2}\\
+               &= 1 - \frac{rP \ln(a)}{np^2 a^{G/p} \del{\frac{a^{G/p} - 1}{a^{Gp}}}^2}\\
+               &= 1 - \frac{rP \ln(a)}{np^2 \del{a^{G/p} (a^{G/p} - 1)}^2}\\
+    p_{n + 1} &= p_n - \frac{f(p_n)}{f'(p_n)}
+\end{align*}
+
+For getting a good $p_0$ we can note that in the general case $G$ is quite
+large, allowing to give the approximation.
+\begin{align*}
+    p_0 &= \lim_{G \to \infty} \frac{r}{n (1 - a^{-G/p})} P\\
+        &= \frac{r}{n} P
+\end{align*}
 
 \end{document}
 

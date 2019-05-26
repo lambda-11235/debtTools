@@ -39,7 +39,8 @@ args = parser.parse_args()
 totalTime = timeToPayOff(args.principal, args.interest, args.freq, args.payment)
 
 if totalTime is None:
-    print("Payment will take an unbounded amount of time to pay off.")
+    pmin = paymentMinimum(args.principal, args.interest, args.freq)
+    print("Payment will take an unbounded amount of time to pay off (must be greater than {:.2f}).".format(pmin))
     exit(1)
 
 time = [t/args.freq for t in range(0, math.floor(args.freq*totalTime))]

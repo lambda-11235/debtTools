@@ -14,7 +14,7 @@ For instance to compute how much one needs to pay for a $100,000 monthly
 mortgage at a 5% interest rate in 20 years run
 
 ```
-> ./compute_payments.py 100000 0.05 12 20
+> ./compute_payments.py 100000 0.05 12 -t 20
 Should pay 659.96 to pay debt off in 20.00 years.
 Total paid is 158389.38, which is a 58.39% return on investment for lender.
 
@@ -22,8 +22,27 @@ Minimum payment needed to maintain current debt is 416.67.
 Recommended minimum payment is 833.33 for 13.89 years for a total of 138918.05 (38.92% return).
 ```
 
-This program gives the amount needed to meet one's target payoff period, the
-total that will be paid, and how much the investor can expect in return.
+If instead one wishes to know how much they need to pay for the total payments
+to add up to $120,000, then they can run
+
+```
+> ./compute_payments.py 100000 0.05 12 -a 120000
+Should pay 1341.28 to pay debt off in 7.46 years.
+Total paid is 120000.00, which is a 20.00% return on investment for lender.
+
+Minimum payment needed to maintain current debt is 416.67.
+Recommended minimum payment is 833.33 for 13.89 years for a total of 138918.05 (38.92% return).
+```
+
+For just the recommended arguments run without flags.
+```
+> ./compute_payments.py 100000 0.05 12
+Minimum payment needed to maintain current debt is 416.67.
+Recommended minimum payment is 833.33 for 13.89 years for a total of 138918.05 (38.92% return).
+```
+
+This program gives the amount needed to meet one's target payoff period/amount,
+the total that will be paid, and how much the investor can expect in return.
 Additionally, it will give the minimum payment needed to not increase debt, as
 well as a recommended minimum payment.
 The recommended minimum payment is approximately how much one needs to pay so

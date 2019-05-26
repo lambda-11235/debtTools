@@ -30,49 +30,67 @@ parser.add_argument('interest', type=float,
         help="The interest rate.")
 parser.add_argument('freq', type=int,
         help="Compound frequency per year.")
-parser.add_argument('time', type=float,
+parser.add_argument('-a', '--amount', type=float,
+        help="Total amount wished to be paid off.")
+parser.add_argument('-t', '--time', type=float,
         help="How many years it will take to pay off debt in years.")
-parser.add_argument('--delta', type=float, default=2,
+parser.add_argument('-d', '--delta', type=float, default=2,
         help="""Constant for determining recommended minimum payment.
         Higher values favor higher total debt.
         It can be estimated as (change in total debt)/(change in principal). (default: %(default)s)""")
-parser.add_argument('--graph', action='store_true',
+parser.add_argument('-g', '--graph', action='store_true',
         help="Graphs time to payoff versus period payment amount.")
 args = parser.parse_args()
 
-P = args.principal
-r = args.interest
-freq = args.freq
-t = args.time
 
-p = paymentNeeded(args.principal, args.interest, args.freq, args.time)
+if args.amount is not None:
+    minAmount = (1 + args.interest/args.freq)*args.principal
 
-time = timeToPayOff(args.principal, args.interest, args.freq, p)
-if time is None:
-    time = t
+    if args.amount < minAmount:
+        print("Error: amount paid off must be at least {:.2f}".format(minAmount))
+        exit(1)
 
-paid = freq*time*p
+    p = paymentFromAmount(args.principal, args.interest, args.freq, args.amount)
+elif args.time is not None:
+    minTime = 1/args.freq
+
+    if args.time < minTime:
+        print("Error: time to pay off debt must be at least {:.2f}".format(minTime))
+        exit(1)
+
+    p = paymentFromTime(args.principal, args.interest, args.freq, args.time)
+
+if args.amount is not None or args.time is not None:
+    time = timeToPayOff(args.principal, args.interest, args.freq, p)
+    paid = args.freq*time*p
+
+    print("Should pay {:.2f} to pay debt off in {:.2f} years.".format(p, time))
+    print("Total paid is {:.2f}, which is a {:.2f}% return on investment for lender.".format(
+        paid, (paid - args.principal)/args.principal*100))
+    print("")
+
 
 pmin = paymentMinimum(args.principal, args.interest, args.freq)
 
 pRec = paymentFromTotalDelta(args.principal, args.interest, args.freq, args.delta)
 tRec = timeToPayOff(args.principal, args.interest, args.freq, pRec)
-paidRec = freq*tRec*pRec
+paidRec = args.freq*tRec*pRec
 
-print("Should pay {:.2f} to pay debt off in {:.2f} years.".format(p, time))
-print("Total paid is {:.2f}, which is a {:.2f}% return on investment for lender.".format(
-    paid, (paid - P)/P*100))
-print("")
 print("Minimum payment needed to maintain current debt is {:.2f}.".format(pmin))
 print("Recommended minimum payment is {:.2f} for {:.2f} years for a total of {:.2f} ({:.2f}% return).".format(
-    pRec, tRec, paidRec, (paidRec - P)/P*100))
+    pRec, tRec, paidRec, (paidRec - args.principal)/args.principal*100))
 
 
 if args.graph:
-    timeUpper = math.ceil(args.freq*args.time) + 1
-    timeLower = args.freq if args.time > 1.0 else 1
+    if args.time is not None:
+        timeUpper = args.time
+    else:
+        timeUpper = 2*tRec
+
+    timeLower = args.freq if timeUpper > 1.0 else 1
+    timeUpper = math.ceil(args.freq*timeUpper) + 1
     time = [t/args.freq for t in range(timeLower, timeUpper)]
-    payment = [paymentNeeded(args.principal, args.interest, args.freq, t) for t in time]
+    payment = [paymentFromTime(args.principal, args.interest, args.freq, t) for t in time]
     paid = [args.freq*t*p for (t, p) in zip(time, payment)]
 
     fig = plt.figure()
