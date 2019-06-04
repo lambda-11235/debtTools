@@ -23,7 +23,7 @@ import math
 
 from common import *
 
-parser = argparse.ArgumentParser(description = "Run a test.")
+parser = argparse.ArgumentParser(description = "Compute necessary payments for a compounded interest loan.")
 parser.add_argument('principal', type=float,
         help="How much is initially owed.")
 parser.add_argument('interest', type=float,
