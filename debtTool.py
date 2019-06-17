@@ -40,6 +40,8 @@ parser.add_argument('--payment', '-p', type=float,
         help="How much is paid each cycle.")
 parser.add_argument('--time-to-payoff', '-t', type=float,
         help="How long it takes to completely payoff all debts.")
+parser.add_argument('--recommended', action='store_true',
+        help="List the recommended payment plan.")
 parser.add_argument('-r', '--return', type=float, default=0.25,
         dest="ret",
         help="""Constant for determining recommended minimum payment.
@@ -50,8 +52,8 @@ parser.add_argument('--graph-tradeoff', type=float, nargs=2,
         Requires the user to give the minimum and maximum x values.
         x values are in time to payoff or amount paid each cycle,
         with time to payoff having preference.""")
-parser.add_argument('--graph-history', action='store_true',
-        help="")
+parser.add_argument('--graph-timeline', action='store_true',
+        help="Graph the whole payment time line.")
 args = parser.parse_args()
 
 plan = PaymentPlan(args.interest, args.compound_freq, args.payment_freq,
@@ -70,21 +72,17 @@ else:
         plan.fillInMissing()
         print(plan.strInfo())
     except NeedOneUnknown:
-        print("Too many unknowns, please provide only one uknown value.")
+        print("Too many unknowns, please provide only one unknown value.")
     except PaymentTooLow:
         print("Payments are too low to ever pay off debt.")
 
-    if plan.principal is not None:
-        print()
-
-        minPayment = plan.getMinimumPayment()
-        print("Minimum payment is {:.2f}.".format(minPayment))
-
+    if plan.principal is not None and args.recommended:
         recPlan = plan.getPlanFromTotalOwed((1 + args.ret)*plan.principal)
+
         print("\nRecommended payment plan is")
         print(recPlan.strInfo())
 
-    if args.graph_history:
+    if args.graph_timeline:
         time = []
         owed = []
         paid = []
@@ -97,20 +95,15 @@ else:
             owed.append(plan.owed(time[-1]))
             paid.append(paid[-1] + plan.payment)
 
-        fig = plt.figure()
-        ax1 = fig.add_subplot(111)
-        ax2 = ax1.twinx()
-
         l1 = "Amount Owed"
         l2 = "Total Amount Paid"
 
-        ax1.plot(time, owed, color="red", label=l1)
-        ax2.plot(time, paid, color="green", label=l2)
+        plt.plot(time, owed, color="red", label=l1)
+        plt.plot(time, paid, color="green", label=l2)
 
-        ax1.set_xlabel("Time (years)")
-        ax1.set_ylabel(l1)
-        ax2.set_ylabel(l2)
-        fig.legend()
+        plt.xlabel("Time (years)")
+        plt.ylabel("Amount")
+        plt.legend()
 
         plt.show()
 

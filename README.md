@@ -6,75 +6,42 @@ debt.
 The `math.tex` and `math.pdf` files give a brief overview of the mathematics
 behind these tools.
 
-## `compute_payments.py`
+## Usage
 
-This tool calculates how much one needs to pay each period to pay off all debts
-in a certain number of years.
-For instance to compute how much one needs to pay for a $100,000 monthly
-mortgage at a 5% interest rate in 20 years run
-
-```
-> ./compute_payments.py 100000 0.05 12 -t 20
-Should pay 659.96 to pay debt off in 20.00 years.
-Total paid is 158389.38, which is a 58.39% return on investment for lender.
-
-Minimum payment needed to maintain current debt is 416.67.
-Recommended minimum payment is 833.33 for 13.89 years for a total of 138918.05 (38.92% return).
-```
-
-If instead one wishes to know how much they need to pay for the total payments
-to add up to $120,000, then they can run
+This debt tool can be used in two ways.
+The first is that given an unknown among the principal, payment, and time to pay
+all debt, it can compute that unknown.
+For example, given a $1,000,000 mortgage at 5% APR compounded daily and paid
+monthly for 30 years, the borrower can compute the monthly payment as follows.
 
 ```
-> ./compute_payments.py 100000 0.05 12 -a 120000
-Should pay 1341.28 to pay debt off in 7.46 years.
-Total paid is 120000.00, which is a 20.00% return on investment for lender.
-
-Minimum payment needed to maintain current debt is 416.67.
-Recommended minimum payment is 833.33 for 13.89 years for a total of 138918.05 (38.92% return).
+> ./debtTool.py 0.05 365 12 -P 1000000 -t 30
+Interest: 0.05
+Compound Frequency: 365.00
+Payment Frequency: 12.00
+Principal: 1000000.00
+Payment: 5374.38
+Minimum Payment 4175.07
+Time to Payoff: 30.00
+Total Paid: 1934777.82
+Return on Investment: 93.48%
 ```
 
-For just the recommended arguments run without flags.
-```
-> ./compute_payments.py 100000 0.05 12
-Minimum payment needed to maintain current debt is 416.67.
-Recommended minimum payment is 833.33 for 13.89 years for a total of 138918.05 (38.92% return).
-```
+From this we can gather that the borrower must pay $5,374.38 per month.
+Passing `--recommended` will also give a recommended payment plan.
+Passing `--graph-timeline` will plot a payment time line (see below).
+![Graph of payment time line.](./timeline.png)
 
-This program gives the amount needed to meet one's target payoff period/amount,
-the total that will be paid, and how much the investor can expect in return.
-Additionally, it will give the minimum payment needed to not increase debt, as
-well as a recommended minimum payment.
-The recommended minimum payment is approximately how much one needs to pay so
-that a $1 increase in the principal results in an increase of the total amount
-paid by $2 (this can be changed with the `--delta` flag).
-This value is double the minimum payment needed to maintain debt.
-Please note this **does not** mean that the total amount paid is twice the
-principal, given monthly payments it ranges from 38.63% to 44.33% returns for
-the investor.
-
-A graph of time to payoff debts versus amount paid can also be shown with the
-`--graph` option.
-An example graph is
-![Graph of time to payoff versus amount paid.](./mortgage_time_pay.png)
-
-## `compound_interest.py`
-
-This tool computes statistics given a set payment plan.
-For example, taking the above mortgage we could decide to pay $1,500 a month.
-The tool can be ran as
+The second function occurs when there are two unknowns and the
+`--graph-tradeoff` option is given.
+For example, suppose we didn't give the 30 year period and instead invoked
 
 ```
-> ./compound_interest.py 100000 0.05 12 1500
-Will take 6.52 years to pay off.
-Total paid is 117395.96, which is a 17.40% return on investment for lender.
+> ./debtTool.py 0.05 365 12 -P 1000000 --graph-tradeoff 10 40
 ```
 
-This again gives how long it will take to pay off the debt, how much in total
-will be paid, and the return on investment it gives the lender.
-
-Passing the `--graph` option gives a graph like so
-![Graph of mortgage owed vs paid.](./mortgage_owed_paid.png)
+This would create the following graph
+![Graph of time to payoff versus amount paid.](./tradeoff.png)
 
 ## Financial Advise
 

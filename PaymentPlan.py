@@ -179,6 +179,7 @@ class PaymentPlan:
         s += "Payment Frequency: {:.2f}\n".format(self.payFreq)
         s += "Principal: {:.2f}\n".format(self.principal)
         s += "Payment: {:.2f}\n".format(self.payment)
+        s += "Minimum Payment {:.2f}\n".format(self.getMinimumPayment())
         s += "Time to Payoff: {:.2f}\n".format(self.timeToPayoff)
         s += "Total Paid: {:.2f}\n".format(self.totalPaid())
         s += "Return on Investment: {:.2f}%".format(100*self.returnOnInvestment())
